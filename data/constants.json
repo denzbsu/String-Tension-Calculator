@@ -1,0 +1,9 @@
+{
+    "MIN_SCALE": 24,
+    "MAX_SCALE": 28,
+
+    "MIN_OCTAVE": -1,
+    "MAX_OCTAVE": 5,
+    
+    "GRAVITATIONAL": 386.4
+}

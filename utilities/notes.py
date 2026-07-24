@@ -7,12 +7,16 @@ with open("data/roots.json", encoding="UTF-8") as file_in:
     roots = json.load(file_in)
 
 
+def transpose(note, step):
+    new_note = code_to_note(note_to_code(note) + step)
+    return new_note
+
 def check_note_format(note):
     if len(note) < 2:
         return False
     root = note.rstrip('0123456789')
     octave = int(note[len(root):])
-    return (root in roots) and (constants["MIN_OCTAVE"] <= octave <= constants["MAX_OCTAVE"])
+    return root in roots
 
 """Input format: <note><octave>. Examples: A3, E2, C4"""
 def note_to_code(note: str):

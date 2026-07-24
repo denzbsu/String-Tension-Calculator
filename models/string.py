@@ -1,6 +1,6 @@
 import json
 from models.observable import Observable
-from utilities.notes import note_to_code, code_to_note, note_to_frequency, check_note_format
+from utilities.notes import transpose, note_to_frequency, check_note_format
 from utilities.gauges import gauge_to_unit_weight, check_gauge, get_gauge_shift
 
 with open("data/constants.json", encoding="UTF-8") as file_in:
@@ -20,7 +20,7 @@ class String(Observable):
     def _set_scale(self, value: float) -> None:
         if (value > constants["MAX_SCALE"]):
             value = constants["MAX_SCALE"]
-        elif (value < constants["MIN_SCALE"])
+        elif (value < constants["MIN_SCALE"]):
             value = constants["MIN_SCALE"]
         else:
             self._scale = value
@@ -47,20 +47,16 @@ class String(Observable):
 
     # ------ Methods for special changing of properties ------ 
     def transpose(self, step: int) -> bool:
-        new_note = code_to_note(note_to_code(self.note) + step)
-        try:
-            self.note = new_note
-            return True
-        except ValueError:
-            return False
+        new_note = transpose(self.note, step)
+        self.note = new_note
 
     def shift_gauge(self, step: int) -> None:
         new_gauge = get_gauge_shift(self.gauge, step)
         self.gauge = new_gauge
 
-    def shift_scale(self, step: int) -> bool:
+    def shift_scale(self, step: float) -> bool:
         new_scale = self.scale + step
-        self.scale = new_scale
+        self.scale = round(new_scale, 3)
 
     def get_data(self):
         return {

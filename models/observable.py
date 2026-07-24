@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from weakref import WeakSet
-from typing import Any
 
 class Observer(ABC):
     
@@ -26,7 +25,7 @@ class Observable(ABC):
         for obs in self._observers:
             obs.update(event_type, data)
 
-    def _notify_property_changed(self, property_name: str, value: Any):
+    def _notify_property_changed(self, property_name: str, value):
         data = {
             "property": property_name,
             "value": value,

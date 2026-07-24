@@ -18,8 +18,8 @@ class StringSet(Observer, Observable):
                 return
             idx = self._strings.index(obj)
             new_data = {
-                "object": self,
                 "index": idx,
+                "object": obj,
                 "property": data["property"],
                 "value": data["value"]
             }
@@ -53,9 +53,7 @@ class StringSet(Observer, Observable):
         index = len(self._strings) - 1
         self._strings[index].detach(self)
         del self._strings[index]
-        self._notify("string_removed", {
-            "index": index
-        })
+        self._notify("string_removed", {"index": index})
 
     @_check_index
     def transpose_string(self, index: int, step: int):
@@ -95,6 +93,9 @@ class StringSet(Observer, Observable):
 
     def __iter__(self):
         return iter(self._strings)
+
+    def __len__(self):
+        return len(self._strings)
 
 
 if __name__ == "__main__":

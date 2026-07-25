@@ -32,3 +32,12 @@ class Observable(ABC):
             "object": self
         }
         self._notify("property_changed", data)
+
+    def _action_request(self, action_name: str, extra_data: dict = dict()):
+        data = {
+            "action": action_name,
+            "object": self
+        }
+        data.update(extra_data)
+        self._notify("action_requested", data)
+

@@ -1,4 +1,4 @@
-from models.observable import Observer, Observable
+from utilities.observable import Observer, Observable
 from models.string_set import StringSet
 import tkinter as tk
 
@@ -20,8 +20,6 @@ class TkView(Observer, Observable):
         self._root.mainloop()
 
     def _startup(self):
-        index = 0
-
         header_frame = tk.Frame(self._root)
 
         # Labels
@@ -45,31 +43,31 @@ class TkView(Observer, Observable):
 
 
         # Buttons
-        scale_up = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_scales_up"))
+        scale_up = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_scales_up"))
         scale_up.grid(row=0, column=1)
 
-        scale_down = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_scales_down"))
+        scale_down = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_scales_down"))
         scale_down.grid(row=2, column=1)
 
-        note_up = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_notes_up"))
+        note_up = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_notes_up"))
         note_up.grid(row=0, column=2)
 
-        note_down = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_notes_down"))
+        note_down = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_notes_down"))
         note_down.grid(row=2, column=2)
 
-        gauge_up = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_gauges_up"))
+        gauge_up = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_gauges_up"))
         gauge_up.grid(row=0, column=3)
 
-        gauge_down = tk.Button(header_frame, text="!", command=lambda: self._action_request(index, "all_gauges_down"))
+        gauge_down = tk.Button(header_frame, text="!", command=lambda: self._action_request("all_gauges_down"))
         gauge_down.grid(row=2, column=3)
 
         header_frame.grid(row=0, column=0)
 
 
-        btn_add = tk.Button(self._root, text="Add", command=lambda: self._action_request(index, "add_string"))
+        btn_add = tk.Button(self._root, text="Add", command=lambda: self._action_request("add_string"))
         btn_add.grid(row=2, column=0)
 
-        btn_remove = tk.Button(self._root, text="Remove", command=lambda: self._action_request(index, "remove_string"))
+        btn_remove = tk.Button(self._root, text="Remove", command=lambda: self._action_request("remove_string"))
         btn_remove.grid(row=3, column=0)
 
     def update(self, event_type, data):
@@ -113,22 +111,22 @@ class TkView(Observer, Observable):
 
 
         # Buttons
-        scale_up = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "scale_up"))
+        scale_up = tk.Button(string_frame, text="!", command=lambda: self._action_request("scale_up", {"index": index}))
         scale_up.grid(row=0, column=1)
 
-        scale_down = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "scale_down"))
+        scale_down = tk.Button(string_frame, text="!", command=lambda: self._action_request("scale_down", {"index": index}))
         scale_down.grid(row=2, column=1)
 
-        note_up = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "note_up"))
+        note_up = tk.Button(string_frame, text="!", command=lambda: self._action_request("note_up", {"index": index}))
         note_up.grid(row=0, column=2)
 
-        note_down = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "note_down"))
+        note_down = tk.Button(string_frame, text="!", command=lambda: self._action_request("note_down", {"index": index}))
         note_down.grid(row=2, column=2)
 
-        gauge_up = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "gauge_up"))
+        gauge_up = tk.Button(string_frame, text="!", command=lambda: self._action_request("gauge_up", {"index": index}))
         gauge_up.grid(row=0, column=3)
 
-        gauge_down = tk.Button(string_frame, text="!", command=lambda: self._action_request(index, "gauge_down"))
+        gauge_down = tk.Button(string_frame, text="!", command=lambda: self._action_request("gauge_down", {"index": index}))
         gauge_down.grid(row=2, column=3)
 
         string_frame.pack()
@@ -142,15 +140,9 @@ class TkView(Observer, Observable):
             "frequency_label": frequency_label
         }
 
-    def _action_request(self, index, action_name):
-        data = {
-            "index": index,
-            "action": action_name
-        }
-        self._notify("action_requested", data)
-
     def _delete_row(self, index):
-        for widget in self._rows[index]["frame"].winfo_children():
+        frame = self._rows[index]["frame"]
+        for widget in frame.winfo_children():
             widget.destroy()
-        self._rows[index]["frame"].destroy()
+        frame.destroy()
         del self._rows[index]

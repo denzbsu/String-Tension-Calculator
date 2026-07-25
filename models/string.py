@@ -1,5 +1,5 @@
 import json
-from models.observable import Observable
+from utilities.observable import Observable
 from utilities.notes import transpose, note_to_frequency, check_note_format
 from utilities.gauges import gauge_to_unit_weight, check_gauge, get_gauge_shift
 

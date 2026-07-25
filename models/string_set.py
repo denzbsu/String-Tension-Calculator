@@ -1,4 +1,4 @@
-from models.observable import Observable, Observer
+from utilities.observable import Observable, Observer
 from models.string import String
 
 
